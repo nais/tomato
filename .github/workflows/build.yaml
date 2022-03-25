@@ -32,32 +32,23 @@ jobs:
         run: |
           docker build --pull --tag ${IMAGE} .
           docker push ${IMAGE}
-#
-#      - name: 'Authenticate to Google Cloud'
-#        id: 'google'
-#        uses: 'google-github-actions/auth@v0'
-#        with:
-#          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-#
-#      # For demonstration purpose
-#      - name: Build and push
-#        uses: docker/build-push-action@v2
-#        with:
-#          push: true
-#          tags: ${{ env.IMAGE }}
-#
-#      # Added to your workflow
-#      - name: Generate provenance, upload and sign image
-#        # wil be actions/salsa-action@v01
-#        uses: ./
-#        with:
-#          image: ${{ env.IMAGE }}
-#
-#      # For test output
-#      - name: Upload provenance
-#        uses: actions/upload-artifact@v2
-#        with:
-#          path: |
-#            ./salsa.provenance
-#            ./salsa.raw.txt
-#            ./salsa.att
+
+      - name: 'Authenticate to Google Cloud'
+        id: 'google'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: NAIS SLSA Provenance Action
+        uses: nais/salsa@v0.0.1-alpha-1
+        with:
+          image: ${{ env.IMAGE }}
+
+      # For test output
+      - name: Upload provenance
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            ./salsa.provenance
+            ./salsa.raw.txt
+            ./salsa.att
