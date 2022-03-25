@@ -4,7 +4,7 @@ on:
     branches:
       - "main"
 env:
-  "IMAGE": "ghcr.io/${{ github.repository }}:${{ github.sha }}"
+  "IMAGE": ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
   "build":
     name: "build"
@@ -26,9 +26,38 @@ jobs:
       - name: "Login to GitHub Docker Registry"
         uses: "docker/login-action@v1"
         with:
-          "registry": "ghcr.io"
-          "username": "${{ github.actor }}"
-          "password": "${{ secrets.GITHUB_TOKEN }}"
+          "registry": ghcr.io
+          "username": ${{ github.actor }}
+          "password": ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build and push the Docker image"
-        run: "docker build --pull --tag ${IMAGE} . && docker push ${IMAGE}"
+        run: docker build --pull --tag ${IMAGE} . && docker push ${IMAGE}
+#
+#      - name: 'Authenticate to Google Cloud'
+#        id: 'google'
+#        uses: 'google-github-actions/auth@v0'
+#        with:
+#          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+#
+#      # For demonstration purpose
+#      - name: Build and push
+#        uses: docker/build-push-action@v2
+#        with:
+#          push: true
+#          tags: ${{ env.IMAGE }}
+#
+#      # Added to your workflow
+#      - name: Generate provenance, upload and sign image
+#        # wil be actions/salsa-action@v01
+#        uses: ./
+#        with:
+#          image: ${{ env.IMAGE }}
+#
+#      # For test output
+#      - name: Upload provenance
+#        uses: actions/upload-artifact@v2
+#        with:
+#          path: |
+#            ./salsa.provenance
+#            ./salsa.raw.txt
+#            ./salsa.att
