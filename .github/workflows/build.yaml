@@ -1,0 +1,34 @@
+name: "Build and deploy tomato"
+on:
+  push:
+    branches:
+      - "main"
+env:
+  "IMAGE": "ghcr.io/${{ github.repository }}:${{ github.sha }}"
+jobs:
+  "build":
+    name: "build"
+    runs-on: "ubuntu-18.04"
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/cache@v2"
+        with:
+          "path": "~/.m2/repository"
+          "key": "${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}"
+          "restore-keys": "${{ runner.os }}-maven-"
+      - uses: "actions/setup-java@v1"
+        with:
+          "java-version": "16"
+
+      - name: "compile and run tests"
+        run: "mvn install"
+
+      - name: "Login to GitHub Docker Registry"
+        uses: "docker/login-action@v1"
+        with:
+          "registry": "ghcr.io"
+          "username": "${{ github.actor }}"
+          "password": "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: "Build and push the Docker image"
+        run: "docker build --pull --tag ${IMAGE} . && docker push ${IMAGE}"
