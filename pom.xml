@@ -62,7 +62,7 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <version>${kotlin_version}</version>
                 <configuration>
-                    <jvmTarget>16</jvmTarget>
+                    <jvmTarget>1.8</jvmTarget>
                 </configuration>
                 <executions>
                     <execution>
