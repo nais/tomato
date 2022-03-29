@@ -41,10 +41,13 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: NAIS SLSA Provenance Action
-        uses: nais/salsa@v0.0.1-alpha-8
+        uses: nais/salsa@v0.0.1-alpha-9
         with:
           image: ${{ env.IMAGE }}
           key: ${{ env.KEY }}
+          docker_registry: ghcr.io
+          docker_user: ${{ github.actor }}
+          docker_pwd: ${{ secrets.GITHUB_TOKEN }}
 
       # For test output
       - name: Upload provenance
