@@ -5,6 +5,7 @@ on:
       - "main"
 env:
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+  KEY: gcpkms://projects/plattformsikkerhet-dev-496e/locations/europe-north1/keyRings/cosign/cryptoKeys/cosign-test/versions/1
 jobs:
   build:
     name: "build"
@@ -40,9 +41,10 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: NAIS SLSA Provenance Action
-        uses: nais/salsa@v0.0.1-alpha-7
+        uses: nais/salsa@v0.0.1-alpha-8
         with:
           image: ${{ env.IMAGE }}
+          key: ${{ env.KEY }}
 
       # For test output
       - name: Upload provenance
