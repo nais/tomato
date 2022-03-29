@@ -41,7 +41,7 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: NAIS SLSA Provenance Action
-        uses: nais/salsa@v0.0.1-alpha-9
+        uses: nais/salsa@v0.0.1-alpha-10
         with:
           image: ${{ env.IMAGE }}
           key: ${{ env.KEY }}
