@@ -36,6 +36,6 @@ jobs:
 
       - uses: anchore/sbom-action@v0
         with:
-          image: {{ env.IMAGE }}
-          registry-username: {{ github.actor }}
+          image: ${{ env.IMAGE }}
+          registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
